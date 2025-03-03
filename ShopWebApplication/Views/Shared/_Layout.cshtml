@@ -1,0 +1,88 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Online clothing store</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Shop</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarColor01">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Home/Index">Головна</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Categories/Index">Каталог</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Home/Privacy">Правила сайту</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Orders/Index">Замовлення</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Carts/Index">
+                            <span id="cartCount" class="badge text-bg-info">0</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+                                <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+                            </svg>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li class="nav-item">
+                            <form asp-action="logout" asp-controller="account" method="post" class="form-inline">
+                                <button type="submit" class="btn btn-link nav-link">Вийти</button>
+                            </form>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" href="/account/register">Зареєструватися</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/account/login">Увійти</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        @RenderBody()
+    </div>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+
+<script>
+    loadCartCount();
+    async function loadCartCount() {
+        console.log("Hello! Hit the method")
+        try {
+            var response = await fetch(`/Carts/GetTotalItemNumberInCart`);
+            console.log(response);
+            if (response.status == 200) {
+                var result = await response.json();
+                var cartItemCount = document.getElementById("cartCount");
+                cartItemCount.innerHTML = result;
+            }
+        }
+        
+        catch (error) {
+                console.log(error);
+        }
+   }
+</script>
+</html>

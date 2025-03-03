@@ -1,0 +1,96 @@
+@model IEnumerable<ShopWebApplication.Models.Cart>
+
+@{
+    ViewData["Title"] = "Index";
+
+}
+
+@if (User.Identity.IsAuthenticated)
+{
+    @if (Model.SelectMany(c => c.CartItems).Any())
+    {
+
+        <style>
+            .product-image {
+                max-width: 100px;
+                max-height: 100px;
+            }
+        </style>
+
+        <h1 class="mt-2">Кошик</h1>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Товар
+                    </th>
+                    <th>
+
+                    </th>
+                    <th>
+                        Розмір
+                    </th>
+                    <th>
+                        Кількість
+                    </th>
+                    <th>
+                        Ціна
+                    </th>
+                    <th>
+                        До оплати
+                    </th>
+                    <th>
+                        Редагувати
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    @foreach (var cartItem in item.CartItems)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => cartItem.Product.ProductName)
+                            </td>
+                            <td>
+                                <img src="@cartItem.Product.ImageUrl" alt="Product Image" class="product-image">
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => cartItem.Size.SizeName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => cartItem.CartItemQuantity)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => cartItem.Product.Price)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => cartItem.TotalPrice)
+                            </td>
+                            <td>
+                                <a class="btn btn-primary" href="/Carts/AddItem?productId=@cartItem.ProductId&redirect=1">+</a>
+                                <a class="btn btn-primary" href="/Carts/RemoveItem?productId=@cartItem.ProductId">-</a>
+                            </td>
+                        </tr>
+                    }
+
+                }
+            </tbody>
+        </table>
+
+        <div>Всього: @Model.Sum(cart => cart.TotalPrice)</div>
+        <div class="mt-2">
+            <a class="btn btn-primary" href="/ClientInfos/EnterClientInfo">Оформити замовлення</a>
+        </div>
+    }
+    else
+    {
+        <div class="mt-4">Кошик наразі порожній. Будь ласка, перейдіть до каталогу, щоб обрати товар.</div>
+    }
+}
+else
+{
+    <div class="mt-4">Будь ласка, увійдіть або зареєструйтесь.</div>
+}

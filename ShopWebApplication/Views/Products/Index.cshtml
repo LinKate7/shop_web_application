@@ -1,0 +1,47 @@
+@model IEnumerable<ShopWebApplication.Models.Product>
+
+@{
+    ViewData["Title"] = "Одяг за категорією";
+    var userId = ViewBag.UserId; // Get the userId from ViewBag
+}
+
+<style>
+    a {
+        text-decoration: none;
+    }
+</style>
+
+<h1>Категорія одягу @ViewBag.CategoryName</h1>
+
+<p>
+    @Html.ActionLink("Додати новий товар", "Create", new { categoryId = ViewBag.CategoryId })
+</p>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4 mb-3">
+            <div class="card" style="width: 20rem;">
+                @if (string.IsNullOrEmpty(item.ImageUrl))
+                {
+
+                }
+                else
+                {
+                    <img src=@item.ImageUrl class="card-img-top" alt="Product Image">
+                }
+                <div class="card-body">
+                    <h5 class="card-title">@Html.DisplayFor(modelItem => item.ProductName)</h5>
+                    <p class="card-text">Ціна: @Html.DisplayFor(modelItem => item.Price)</p>
+                    <div class="d-flex justify-content-between">
+                        <div class="row">
+                            <div class="col">
+                                <a href="@Url.Action("Details", new { id = item.ProductId })" class="btn btn-primary">Деталі</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

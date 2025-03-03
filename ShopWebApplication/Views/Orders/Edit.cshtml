@@ -1,0 +1,52 @@
+@model ShopWebApplication.Models.Order
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Редагувати</h1>
+
+<h4>Замовлення</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="OrderId" />
+            <input type="hidden" asp-for="UserId" class="form-control" />
+            <div class="form-group">
+                <input type="hidden" asp-for="OrderDate" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StatusId" class="control-label"></label>
+                <select asp-for="StatusId" class="form-control" asp-items="ViewBag.StatusId"></select>
+                <span asp-validation-for="StatusId" class="text-danger"></span>
+            </div>
+            <input type="hidden" asp-for="ClientInfoId" class="form-control" />
+            <div class="form-group">
+                <input type="submit" value="Зберегти" class="btn btn-primary" />
+            </div>
+            @foreach (var orderItem in Model.OrderItems)
+            {
+                <div class="form-group">
+                    <label asp-for="@orderItem.OrderItemQuantity" class="control-label">Кількість</label>
+                    <input asp-for="@orderItem.OrderItemQuantity" class="form-control" />
+                    <span asp-validation-for="@orderItem.OrderItemQuantity" class="text-danger"></span>
+                </div>
+            }
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">До замовлень</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

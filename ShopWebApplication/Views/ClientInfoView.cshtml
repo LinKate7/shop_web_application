@@ -1,0 +1,57 @@
+﻿@model ShopWebApplication.ViewModels.ClientInfoViewModel
+
+@{
+    ViewData["Title"] = "Client Information";
+}
+
+<div class="row">
+    <div class="col-md-8 mb-4">
+        <div class="card mb-4">
+            <div class="card-header py-3">
+                <h5 class="mb-0">Деталі замовлення</h5>
+            </div>
+            <div class="card-body">
+                <form id="clientInfoForm" method="post" action="/Carts/Edit">
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="form-outline">
+                                <input type="text" id="FirstName" name="FirstName" class="form-control" value="@Model.FirstName" />
+                                <label class="form-label" for="FirstName">Ім'я'</label>
+                                <span class="text-danger">@Html.ValidationMessageFor(model => model.FirstName)</span>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-outline">
+                                <input type="text" id="LastName" name="LastName" class="form-control" value="@Model.LastName" />
+                                <label class="form-label" for="LastName">Прізвище</label>
+                                <span class="text-danger">@Html.ValidationMessageFor(model => model.LastName)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-outline mb-4">
+                        <input type="text" id="PhoneNumber" name="PhoneNumber" class="form-control" value="@Model.PhoneNumber" />
+                        <label class="form-label" for="PhoneNumber">Номер телефону</label>
+                        <span class="text-danger">@Html.ValidationMessageFor(model => model.PhoneNumber)</span>
+                    </div>
+
+                    <div class="form-outline mb-4">
+                        <input type="email" id="Email" name="Email" class="form-control" value="@Model.Email" />
+                        <label class="form-label" for="Email">Email</label>
+                        <span class="text-danger">@Html.ValidationMessageFor(model => model.Email)</span>
+                    </div>
+
+                    <div class="form-outline mb-4">
+                        <input type="text" id="Address" name="Address" class="form-control" value="@Model.Address" />
+                        <label class="form-label" for="Address">Адреса</label>
+                        <span class="text-danger">@Html.ValidationMessageFor(model => model.Address)</span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-lg btn-block">
+                        Зробити покупку
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

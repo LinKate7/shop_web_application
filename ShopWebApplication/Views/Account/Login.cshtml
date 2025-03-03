@@ -1,0 +1,33 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model ShopWebApplication.ViewModels.LoginViewModel
+
+    <style>
+        .short-input {
+            max-width: 400px; 
+        }
+    </style>
+
+<form asp-action="Login" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="form-group mt-4">
+        <label asp-for="Email"></label>
+        <input asp-for="Email" class="form-control short-input" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Password"></label>
+        <input asp-for="Password" type="password" class="form-control short-input" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+
+    <div class="form-group form-check">
+        <input asp-for="RememberMe" class="form-check-input" />
+        <label asp-for="RememberMe" class="form-check-label"></label>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Увійти</button>
+    <a href="@Url.Action("register", "Account")" class="btn btn-secondary">Зареєструватися</a>
+    <a href="@Url.Action("Index", "Home")" class="btn btn-secondary">Відмінити</a>
+</form>

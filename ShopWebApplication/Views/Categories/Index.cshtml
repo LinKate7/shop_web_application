@@ -1,0 +1,89 @@
+@model IEnumerable<ShopWebApplication.Models.Category>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<style>
+    a {
+        text-decoration: none;
+    }
+</style>
+
+<h1>Категорії одягу</h1>
+
+<p>
+    <a asp-action="Create">Створити категорію</a>
+</p>
+
+<p>
+    <a class="btn btn-primary mb-3" type="submit" asp-area="" aspcontroller="Categories" asp-action="Import">Завантажити з файлу</a>
+    <a class="btn btn-primary mb-3" type="=submit" asp-area="" asp-controller="Categories" asp-action="Export">Експортувати у файл</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CategoryName)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.CategoryId">Редагувати</a> |
+                    <a asp-action="Details" asp-route-id="@item.CategoryId">Товари</a> |
+                    <a asp-action="Delete" asp-route-id="@item.CategoryId">Видалити</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div id="countBestsellersChart"></div>
+
+@section scripts{
+
+    <script>function drawBestsellersChart(clothingItemsToCountList, navbarColor) {
+            const dataTable = new google.visualization.DataTable();
+            dataTable.addColumn('string', 'Товар');
+            dataTable.addColumn('number', 'Кількість замовлень цього товару');
+
+            clothingItemsToCountList.forEach(item => {
+                dataTable.addRow([item.productName, item.orderCount]);
+            });
+
+            const options = {
+                title: "Бестселлери",
+                width: 600,
+                height: 400,
+                legend: { position: 'none' },
+                colors: [navbarColor]
+            };
+
+            const chart = new google.visualization.ColumnChart(document.getElementById('countBestsellersChart'));
+            chart.draw(dataTable, options);
+        }
+
+        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.setOnLoadCallback(drawCharts);
+
+        function drawCharts() {
+            fetch('/api/Chart/popular-clothing-items')
+                .then(response => response.json())
+                .then(data => {
+                    const navbarColor = getComputedStyle(document.querySelector('.navbar')).getPropertyValue('background-color');
+                    drawBestsellersChart(data, navbarColor)
+                });
+        }</script>
+}
+
+
+
